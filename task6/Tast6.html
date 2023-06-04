@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <title>Любимая Москва</title>
+</head>
+<body>
+	<div class="Tittle">
+		<h2>Любимая Москва</h2>
+	</div>	
+	<div class="container">	
+	    <div class="column">
+			<img src="image/красная-площадб.JPG" alt="Красная площадь">
+			<img src="image/вднх.JPG" alt="ВДНХ">
+
+		</div>
+		<div class="column">
+			<h2>Описание</h2>
+
+            <p>Москва – столица Российской Федерации, самый крупный по численности населения город страны и один из десяти крупнейших городов мира. Она является центром Московской области, но сама в её состав не входит. Территориально Москва разделена на 12 административных округов, 125 районов и 21 поселение.
+            Москва – один из самых привлекательных в туристическом плане городов мира, поражающий гостей своей историей, неимоверным количеством всевозможных архитектурных достопримечательностей, музеев, театров, галерей, которые не сможет перечислить ни один искусствовед. В то же время Москва – город глубоких контрастов. Здесь можно увидеть очередь за «Бэнтли» и нищих в переходах метро, деревянные избы в тупиках Китай-города и стеклянные небоскрёбы Москва-Сити, ощутить деревенскую тишину переулков Замоскворечья и шум мегаполиса в деловых кварталах.</p>
+
+			<h2>Полезные ссылки</h2>
+			<ul>	
+			  <li><a href="https://moydom.moscow/gorod/" target="_blank">Сайт Москвы</a></li>
+              <li><a href="https://ru.wikipedia.org/wiki/Москва" target="_blank">Википедия</a></li>
+            </ul>
+	    </div>
+        <div class="column" id="root"></div>
+	</div>
+	<footer>
+          Copyright Галкин Иван 2023
+    </footer>
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.min.js"></script>
+	    <script src="scripts/script.js"></script>
+
+    <script type="text/babel">
+        class MoscowForm extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    valuePlace: 'arbat',
+                    valuePainting: 'Вы ничего не выбрали'
+                };
+
+
+                this.handlePlaceChange = this.handlePlaceChange.bind(this);
+                this.handlePaintingChange = this.handlePaintingChange.bind(this);
+            }
+
+            handlePlaceChange = (event) => {
+                this.setState({valuePlace: event.target.value});
+            }
+
+            handlePaintingChange = (event) => {
+                this.setState({valuePainting: event.target.value});
+            }
+
+            handleSubmit = (event) => {
+                event.preventDefault();
+                const {valuePlace, valuePainting} = this.state;
+                alert(`Любимое место Москвы: ${valuePlace}\nКакая картинка красивее: ${valuePainting}`);
+            }
+
+            render() {
+                return (
+                    <div className="column">
+                        <h2>Опрос</h2>
+                        <form onSubmit={this.handleSubmit}>
+                            <label>Любимое место Москвы</label>
+                            <br />
+                            <select value={this.state.value} onChange={this.handlePlaceChange}>
+                                {this.props.data.selectOptions.map((option) => (
+                                    <option key={option.id} value={option.id}>
+                                        {option.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <br/>
+
+                            <label>Какая картинка красивее:</label>
+                            {this.props.data.radioInputs.map((radioInput) => (
+                                <p key={radioInput.id}>
+                                    <input type="radio" value={radioInput.id} name="radio" id={radioInput.id} onChange={this.handlePaintingChange} />
+                                    <label for={radioInput.id}>{radioInput.name}</label>
+                                </p>
+                            ))}
+                            <br/>
+
+                            <button class="submit">
+                                Отправить
+                            </button>
+                        </form>
+                        <button onClick={getBitcoinPrice}>Получить курс биткоина</button>
+                        <div id="bitcoinPrice"></div>
+                    </div>
+                );
+            }
+        }
+        const data = {
+            radioInputs: [
+                { id: "painting1", name: "Картинка 1" },
+                { id: "painting2", name: "Картинка 2" },
+            ],
+            selectOptions: [
+                { id: "arbat", name: "Арбат" },
+                { id: "china-city", name: "Китай-город" },
+                { id: "redSquare", name: "Красная площадь" },
+                { id: "VDNH", name: "ВДНХ" },
+            ],
+        };
+        ReactDOM.render(<MoscowForm data={data} />, document.getElementById("root"));
+    </script>
+</body>
+</html>
